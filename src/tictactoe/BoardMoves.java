@@ -5,8 +5,13 @@ package tictactoe;
  */
 public class BoardMoves {
 	
-	public static Move getWinningMove(Board board, String player) {
-
+	public static Move getWinningMove(Board board, Move lastMove, String player) {
+		String opposingPlayer = player.equals("o") ? "x" : "o";
+		Move blocking = getBlockingMove(board, lastMove, opposingPlayer);
+		if (blocking != null) {
+			return new Move(blocking.x, blocking.y, player);
+		}
+		return null;
 	}
 
 	public static Move getBlockingMove(Board board, Move opponentMove, String player) {

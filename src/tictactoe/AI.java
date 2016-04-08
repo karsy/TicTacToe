@@ -6,18 +6,14 @@ package tictactoe;
 public class AI {
 
     private String character;
-    private GameTree gameTree;
+    private GameTree gameTree = new GameTree();
     private Node currentNode;
     private int turn = 0;
     private Move lastMove;
 
-    public AI(String character, boolean generateTree) {
+    public AI(String character) {
         this.character = character;
-
-        if (generateTree) {
-            gameTree = new GameTree();
-            currentNode = gameTree.getRoot();
-        }
+        currentNode = gameTree.getRoot();
     }
 
     public Move getMove(Move opponentMove) {
