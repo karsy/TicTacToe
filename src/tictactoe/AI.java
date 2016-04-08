@@ -6,13 +6,17 @@ package tictactoe;
 public class AI {
 
     private String character;
-    private GameTree gameTree = new GameTree();
+    private GameTree gameTree;
     private Node currentNode;
     private int turn = 0;
 
-    public AI(String character) {
+    public AI(String character, boolean generateTree) {
         this.character = character;
-        this.currentNode = gameTree.getRoot();
+
+        if (generateTree) {
+            gameTree = new GameTree();
+            currentNode = gameTree.getRoot();
+        }
     }
 
     public Move getMove(Move opponentMove) {
@@ -28,8 +32,6 @@ public class AI {
     private Move getBlockingMove(Board board, Move opponentMove) {
         int x = opponentMove.x;
         int y = opponentMove.y;
-        int opponentSquares = 0;
-        int yourSquares = 0;
 
         // Horizontal
         Move horizontalBlockingMove = getHorizontalBlockingMove(board, x, y);
@@ -50,8 +52,11 @@ public class AI {
             return null;
         }
 
-        
 
+
+
+        // No blocking moves available
+        return null;
     }
 
     private Move getHorizontalBlockingMove(Board board, int x, int y) {
@@ -68,7 +73,7 @@ public class AI {
         }
 
         if (yourSquares == 0 && opponentSquares > 1) {
-            int moveX;
+            int moveX = 0;
 
             for (int i = 0; i < board.getWidth(); i++) {
                 if (board.getCell(i, y).equals(" ")) {
@@ -77,7 +82,7 @@ public class AI {
                 }
             }
 
-            return new Move(character, moveX, y);
+            return new Move(moveX, y, character);
         }
 
         return null;
@@ -97,7 +102,7 @@ public class AI {
         }
 
         if (yourSquares == 0 && opponentSquares > 1) {
-            int moveY;
+            int moveY = 0;
 
             for (int i = 0; i < board.getHeight(); i++) {
                 if (board.getCell(x, i).equals(" ")) {
@@ -106,7 +111,13 @@ public class AI {
                 }
             }
 
-            return new Move(character, x, moveY);
+            return new Move(x, moveY, character);
         }
+
+        return null;
+    }
+
+    private Move getTopLeftDiagonalBlockingMove(Board board, int x, int y) {
+
     }
 }
