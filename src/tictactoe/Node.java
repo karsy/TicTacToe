@@ -9,7 +9,7 @@ import java.util.List;
 public class Node {
 
     private List<Node> children = new ArrayList<>();
-    private int score;
+    private double score;
     private Board currentBoard;
     private Boolean winner = null;
 

@@ -25,6 +25,13 @@ public class Board {
         return 3;
     }
 
+    public boolean getVictory(Move lastMove) {
+
+
+
+        return false;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

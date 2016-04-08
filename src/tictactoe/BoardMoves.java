@@ -4,6 +4,20 @@ package tictactoe;
  * Created by Vegard Seim Karstang on 08.04.16.
  */
 public class BoardMoves {
+
+	public Move getForcedMove(Board board, Move opponentMove, Move lastMove, String player) {
+		Move move = BoardMoves.getWinningMove(board, lastMove, player);
+		if (move != null) {
+			return move;
+		}
+
+		move = getBlockingMove(board, opponentMove, player);
+		if (move != null) {
+			return move;
+		}
+
+		return null;
+	}
 	
 	public static Move getWinningMove(Board board, Move lastMove, String player) {
 		String opposingPlayer = player.equals("o") ? "x" : "o";
