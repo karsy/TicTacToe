@@ -52,8 +52,17 @@ public class AI {
             return null;
         }
 
+        // Diagonal starting from the top left
+        Move topLeftDiagonalBlockingMove = getTopLeftDiagonalBlockingMove(board);
+        if (topLeftDiagonalBlockingMove != null) {
+            return topLeftDiagonalBlockingMove;
+        }
 
-
+        // Diagonal starting from the bottom left
+        Move bottomLeftDiagonalBlockingMove = getBottomLeftDiagonalBlockingMove(board);
+        if (bottomLeftDiagonalBlockingMove != null) {
+            return bottomLeftDiagonalBlockingMove;
+        }
 
         // No blocking moves available
         return null;
@@ -117,7 +126,61 @@ public class AI {
         return null;
     }
 
-    private Move getTopLeftDiagonalBlockingMove(Board board, int x, int y) {
+    private Move getTopLeftDiagonalBlockingMove(Board board) {
+        int opponentSquares = 0;
+        int yourSquares = 0;
 
+        for (int i = 0; i < board.getWidth(); i++) {
+            String cellValue = board.getCell(i, i);
+            if (cellValue.equals(character)) {
+                yourSquares++;
+            } else if (!cellValue.equals(" ")) {
+                opponentSquares++;
+            }
+        }
+
+        if (yourSquares == 0 && opponentSquares > 1) {
+            int moveCoord = 0;
+
+            for (int i = 0; i < board.getWidth(); i++) {
+                if (board.getCell(i, i).equals(" ")) {
+                    moveCoord = i;
+                    break;
+                }
+            }
+
+            return new Move(moveCoord, moveCoord, character);
+        }
+
+        return null;
+    }
+
+    private Move getBottomLeftDiagonalBlockingMove(Board board) {
+        int opponentSquares = 0;
+        int yourSquares = 0;
+
+        for (int i = 0; i < board.getWidth(); i++) {
+            String cellValue = board.getCell(i, 2 - i);
+            if (cellValue.equals(character)) {
+                yourSquares++;
+            } else if (!cellValue.equals(" ")) {
+                opponentSquares++;
+            }
+        }
+
+        if (yourSquares == 0 && opponentSquares > 1) {
+            int moveCoord = 0;
+
+            for (int i = 0; i < board.getWidth(); i++) {
+                if (board.getCell(i, 2 - i).equals(" ")) {
+                    moveCoord = i;
+                    break;
+                }
+            }
+
+            return new Move(moveCoord, moveCoord, character);
+        }
+
+        return null;
     }
 }
