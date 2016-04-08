@@ -18,7 +18,11 @@ public class AI {
     }
 
     public Move getMove(Move opponentMove) {
+        currentNode = currentNode.getChild(opponentMove);
 
-        return new Move(0, 0, character);
+        // Take the middle if not already taken
+        if (currentNode.getBoard().getCell(1, 1).equals(" ")) {
+            return new Move(1, 1, character);
+        }
     }
 }

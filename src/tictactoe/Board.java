@@ -13,6 +13,10 @@ public class Board {
         return true;
     }
 
+    public void clearCell(int x, int y) {
+        board[x][y] = " ";
+    }
+
     public String getCell(int x, int y) {
         return board[x][y];
     }
