@@ -163,7 +163,7 @@ public class BoardMoves {
 				}
 			}
 
-			return new Move(moveCoord, moveCoord, player);
+			return new Move(moveCoord, 2 - moveCoord, player);
 		}
 
 		return null;
