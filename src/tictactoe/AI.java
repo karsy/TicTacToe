@@ -8,6 +8,7 @@ public class AI {
     private String character;
     private GameTree gameTree = new GameTree();
     private Node currentNode;
+    private int turn = 0;
 
     public AI(String character) {
         this.character = character;
@@ -31,32 +32,15 @@ public class AI {
         int yourSquares = 0;
 
         // Horizontal
-        for (int i = 0; i < board.getWidth(); i++) {
-            String cellValue = board.getCell((x + i) % board.getWidth(), y);
-            if (cellValue.equals(character)) {
-                yourSquares++;
-            } else if (!cellValue.equals(" ")) {
-                opponentSquares++;
-            }
-        }
-
-        if (yourSquares == 0 && opponentSquares > 1) {
-            return getHorizontalBlockingMove();
+        Move horizontalBlockingMove = getHorizontalBlockingMove(board, x, y);
+        if (horizontalBlockingMove != null) {
+            return horizontalBlockingMove;
         }
 
         // Vertical
-        opponentSquares = 0;
-        yourSquares = 0;
-        for (int i = 0; i < board.getHeight(); i++) {
-            String cellValue = board.getCell(x, (y + i) % 3);
-            if (cellValue.equals(character)) {
-                yourSquares++;
-            } else if (!cellValue.equals(" ")) {
-                opponentSquares++;
-            }
-        }
-        if (yourSquares == 0 && opponentSquares > 1) {
-            return getVerticalBlockingMove();
+        Move verticalBlockingMove = getVerticalBlockingMove(board, x, y);
+        if (verticalBlockingMove != null) {
+            return verticalBlockingMove;
         }
 
         // Diagonal
@@ -66,14 +50,13 @@ public class AI {
             return null;
         }
 
-
+        
 
     }
 
     private Move getHorizontalBlockingMove(Board board, int x, int y) {
         int opponentSquares = 0;
         int yourSquares = 0;
-        Move move;
 
         for (int i = 0; i < board.getWidth(); i++) {
             String cellValue = board.getCell((x + i) % board.getWidth(), y);
@@ -86,18 +69,44 @@ public class AI {
 
         if (yourSquares == 0 && opponentSquares > 1) {
             int moveX;
-            int moveY;
 
             for (int i = 0; i < board.getWidth(); i++) {
-                    
+                if (board.getCell(i, y).equals(" ")) {
+                    moveX = i;
+                    break;
+                }
             }
+
+            return new Move(character, moveX, y);
         }
 
         return null;
     }
 
-    private Move getVerticalBlockingMove() {
+    private Move getVerticalBlockingMove(Board board, int x, int y) {
         int opponentSquares = 0;
         int yourSquares = 0;
+
+        for (int i = 0; i < board.getHeight(); i++) {
+            String cellValue = board.getCell(x, (y + i) % 3);
+            if (cellValue.equals(character)) {
+                yourSquares++;
+            } else if (!cellValue.equals(" ")) {
+                opponentSquares++;
+            }
+        }
+
+        if (yourSquares == 0 && opponentSquares > 1) {
+            int moveY;
+
+            for (int i = 0; i < board.getHeight(); i++) {
+                if (board.getCell(x, i).equals(" ")) {
+                    moveY = i;
+                    break;
+                }
+            }
+
+            return new Move(character, x, moveY);
+        }
     }
 }
