@@ -33,6 +33,25 @@ public class Board {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Board)) {
+            return false;
+        }
+
+        Board other = (Board) obj;
+        boolean equal = true;
+        for (int x = 0; x < getWidth(); x++) {
+            for (int y = 0; y < getHeight(); y++) {
+                if (!board[x][y].equals(other.getCell(x, y))) {
+                    equal = false;
+                }
+            }
+        }
+
+        return equal;
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
