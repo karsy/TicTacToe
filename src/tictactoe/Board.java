@@ -1,12 +1,25 @@
 package tictactoe;
 
+import java.util.Arrays;
+
 public class Board {
 
+    public static final int NUMBER_OF_CELLS = 9;
     private String[][] board = {{" ", " ", " "}, {" ", " ", " "}, {" ", " ", " "}};
+    private String[] players = new String[2];
+
+    public Board(String firstPlayer, String secondPlayer) {
+        this.players[0] = firstPlayer;
+        this.players[1] = secondPlayer;
+    }
 
     public boolean setValue(String c, int x, int y) {
         if (!board[x][y].equals(" ")) {
            return false;
+        }
+
+        if (illegalPlayer(c)) {
+            return false;
         }
 
         board[x][y] = c;
@@ -34,6 +47,24 @@ public class Board {
 
 
         return false;
+    }
+
+    // Return the string of the player that is not the player given in the parameter
+    public String getOtherPlayer(String player) {
+        if (illegalPlayer(player)) {
+            return "";
+        }
+
+        if (player.equals(players[0])) {
+            return players[1];
+        } else {
+            return players[0];
+        }
+
+    }
+
+    public boolean illegalPlayer(String player) {
+        return Arrays.stream(players).filter(s -> s.equals(player)).count() == 0;
     }
 
     @Override

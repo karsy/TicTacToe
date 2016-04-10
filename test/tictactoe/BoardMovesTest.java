@@ -42,6 +42,10 @@ public class BoardMovesTest {
 		board = setupBoard(new String[]{" ", "x", " ", " ", " ", " ", " ", " ", " "});
 		Move move6 = BoardMoves.getBlockingMove(board, new Move(1, 0, "x"), "o");
 		assertNull(move6);
+
+		board = setupBoard(new String[]{" ", " ", " ", " ", "x", " ", " ", " ", " "});
+		Move move7 = BoardMoves.getBlockingMove(board, null, "o");
+		assertNull(move7);
 	}
 
 	@Test

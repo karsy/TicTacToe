@@ -6,23 +6,28 @@ package tictactoe;
 public class AI {
 
     private String character;
-    private GameTree gameTree = new GameTree();
+    private GameTree gameTree = new GameTree(3);
     private Node currentNode;
     private int turn = 0;
     private Move lastMove;
 
     public AI(String character) {
         this.character = character;
-        currentNode = gameTree.getRoot();
-        lastMove = null;
     }
 
-    public Move getMove(Move opponentMove) {
-        currentNode = currentNode.getChild(opponentMove);
+    public Move getMove(Board board, Move opponentMove) {
 
         // Take the middle if not already taken
         if (currentNode.getBoard().getCell(1, 1).equals(" ")) {
             return new Move(1, 1, character);
         }
+
+        Move forced = BoardMoves.getForcedMove(board, opponentMove, lastMove, character);
+        if (forced != null) {
+            return forced;
+        }
+
+        gameTree.generateFromBoard(board, character);
+        return gameTree.getBestMove();
     }
 }

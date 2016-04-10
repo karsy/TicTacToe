@@ -12,9 +12,37 @@ public class Node {
     private List<Node> children = new ArrayList<>();
     private double score;
     private Board currentBoard;
-    private Boolean winner = null;
+    private Move move;
 
     public Node() {
+
+    }
+
+    public Node(Board currentBoard) {
+        this.currentBoard = currentBoard;
+    }
+
+    public Node(Move move, Board board) {
+        this.move = move;
+        this.currentBoard = board;
+    }
+
+    public Node(boolean generateChildren, String currentPlayer) {
+        if (generateChildren) {
+            generateChildren(currentPlayer);
+        }
+    }
+
+    public void addChild(Node child) {
+        this.getChildren().add(child);
+    }
+
+    public void generateChildren(String currentPlayer) {
+        for (int i = 0; i < Board.NUMBER_OF_CELLS; i++ ) {
+            if (currentBoard.getCell(getBoardX(i), getBoardY(i)).equals(" ")) {
+
+            }
+        }
     }
 
     public void addChildren(Node... children) {
@@ -39,5 +67,17 @@ public class Node {
         currentBoard.clearCell(move.x, move.y);
 
         return newChild;
+    }
+
+    public List<Node> getChildren() {
+        return children;
+    }
+
+    public double getScore() {
+        return score;
+    }
+
+    public Move getMove() {
+        return move;
     }
 }
