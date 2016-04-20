@@ -14,4 +14,17 @@ public class Move {
         this.y = y;
         this.character = character;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Move move = (Move) o;
+
+        if (x != move.x) return false;
+        if (y != move.y) return false;
+        return character.equals(move.character);
+
+    }
 }

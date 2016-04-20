@@ -44,10 +44,6 @@ public class Board {
         return setValue(move.character, move.x, move.y);
     }
 
-    public void clearCell(int x, int y) {
-        board[x][y] = " ";
-    }
-
     public String getCell(int x, int y) {
         return board[x][y];
     }

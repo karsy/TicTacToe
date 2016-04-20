@@ -14,10 +14,6 @@ public class Node {
     private Board currentBoard;
     private Move move;
 
-    public Node() {
-
-    }
-
     public Node(Board currentBoard) {
         this.currentBoard = currentBoard;
     }
@@ -25,16 +21,6 @@ public class Node {
     public Node(Move move, Board board) {
         this.move = move;
         this.currentBoard = board;
-    }
-
-    /*public Node(boolean generateChildren, String currentPlayer) {
-        if (generateChildren) {
-            generateChildren(currentPlayer);
-        }
-    }*/
-
-    public void addChild(Node child) {
-        this.getChildren().add(child);
     }
 
     public void generateChildren(String currentPlayer, int turn) {
@@ -59,7 +45,7 @@ public class Node {
                     if (currentPlayer.equals(currentBoard.getStartPlayer())) {
                         child.score = GameTree.WIN_WEIGHT * (1 / Math.pow(turn, 2));
                     } else {
-                        child.score = GameTree.DRAW_WEIGHT * (1 / Math.pow(turn, 2));
+                        child.score = GameTree.LOSS_WEIGHT * (1 / Math.pow(turn, 2));
                     }
                 }
 
@@ -69,32 +55,27 @@ public class Node {
         score = children.stream().mapToDouble(n -> n.score).sum();
     }
 
-    public void addChildren(Node... children) {
-        Collections.addAll(this.children, children);
-    }
-
-    public Board getBoard() {
-        return currentBoard;
-    }
-
-    public Node getChild(Move move) {
-        Node newChild = null;
-
-        currentBoard.setValue(move.character, move.x, move.y);
+    public Node getBestChild() {
+        double bestScore = children.get(0).getScore();
+        Node bestNode = children.get(0);
         for (Node child: children) {
-            if (child.currentBoard.equals(currentBoard)) {
-                newChild = child;
-                break;
+            if (child.getScore() > bestScore) {
+                bestScore = child.getScore();
+                bestNode = child;
             }
         }
 
-        currentBoard.clearCell(move.x, move.y);
-
-        return newChild;
+        return bestNode;
     }
 
-    public List<Node> getChildren() {
-        return children;
+    public Node getChild(Move move) {
+        for (Node child: children) {
+            if (child.getMove().equals(move)) {
+                return child;
+            }
+        }
+
+        return null;
     }
 
     public double getScore() {

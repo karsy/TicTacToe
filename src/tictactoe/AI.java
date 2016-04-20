@@ -22,30 +22,26 @@ public class AI {
             turn = 1;
         }
 
-        gameTree = new GameTree(turn);
-        gameTree.generateFromBoard(board, character);
-        turn += 2;
-        return gameTree.getBestMove();
-
-        /*// Take the middle if not already taken
-        if (board.getCell(1, 1).equals(" ")) {
-            turn++;
-            return new Move(1, 1, character);
+        if (gameTree == null) {
+            gameTree = new GameTree(turn);
+            gameTree.generateFromBoard(board, character);
+            currentNode = gameTree.getRoot();
+        } else {
+            currentNode = currentNode.getChild(opponentMove);
         }
 
         Move forced = BoardMoves.getForcedMove(board, opponentMove, lastMove, character);
         if (forced != null) {
-            turn++;
+            turn += 2;
+            currentNode = currentNode.getChild(forced);
+            lastMove = forced;
             return forced;
         }
 
-        if (gameTree == null) {
-            gameTree = new GameTree(turn);
-            gameTree.generateFromBoard(board, character);
-        }
-
-        turn++;
-        return gameTree.getBestMove();*/
+        currentNode = currentNode.getBestChild();
+        turn += 2;
+        lastMove = currentNode.getMove();
+        return lastMove;
     }
 
     public String getCharacter() {
