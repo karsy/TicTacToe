@@ -52,7 +52,7 @@ public class BoardMoves {
 		// Diagonal
 
 		// Last move was on the edge
-		if ((x + y * board.getWidth()) % 2 == 1) {
+		if ((x + y * board.getSize()) % 2 == 1) {
 			return null;
 		}
 
@@ -76,8 +76,8 @@ public class BoardMoves {
 		int opponentSquares = 0;
 		int yourSquares = 0;
 
-		for (int i = 0; i < board.getWidth(); i++) {
-			String cellValue = board.getCell((x + i) % board.getWidth(), y);
+		for (int i = 0; i < board.getSize(); i++) {
+			String cellValue = board.getCell((x + i) % board.getSize(), y);
 			if (cellValue.equals(currentPlayer)) {
 				yourSquares++;
 			} else if (!cellValue.equals(" ")) {
@@ -88,7 +88,7 @@ public class BoardMoves {
 		if (yourSquares == 0 && opponentSquares > 1) {
 			int moveX = 0;
 
-			for (int i = 0; i < board.getWidth(); i++) {
+			for (int i = 0; i < board.getSize(); i++) {
 				if (board.getCell(i, y).equals(" ")) {
 					moveX = i;
 					break;
@@ -105,7 +105,7 @@ public class BoardMoves {
 		int opponentSquares = 0;
 		int yourSquares = 0;
 
-		for (int i = 0; i < board.getHeight(); i++) {
+		for (int i = 0; i < board.getSize(); i++) {
 			String cellValue = board.getCell(x, (y + i) % 3);
 			if (cellValue.equals(currentPlayer)) {
 				yourSquares++;
@@ -117,7 +117,7 @@ public class BoardMoves {
 		if (yourSquares == 0 && opponentSquares > 1) {
 			int moveY = 0;
 
-			for (int i = 0; i < board.getHeight(); i++) {
+			for (int i = 0; i < board.getSize(); i++) {
 				if (board.getCell(x, i).equals(" ")) {
 					moveY = i;
 					break;
@@ -134,7 +134,7 @@ public class BoardMoves {
 		int opponentSquares = 0;
 		int yourSquares = 0;
 
-		for (int i = 0; i < board.getWidth(); i++) {
+		for (int i = 0; i < board.getSize(); i++) {
 			String cellValue = board.getCell(i, i);
 			if (cellValue.equals(currentPlayer)) {
 				yourSquares++;
@@ -146,7 +146,7 @@ public class BoardMoves {
 		if (yourSquares == 0 && opponentSquares > 1) {
 			int moveCoord = 0;
 
-			for (int i = 0; i < board.getWidth(); i++) {
+			for (int i = 0; i < board.getSize(); i++) {
 				if (board.getCell(i, i).equals(" ")) {
 					moveCoord = i;
 					break;
@@ -163,7 +163,7 @@ public class BoardMoves {
 		int opponentSquares = 0;
 		int yourSquares = 0;
 
-		for (int i = 0; i < board.getWidth(); i++) {
+		for (int i = 0; i < board.getSize(); i++) {
 			String cellValue = board.getCell(i, 2 - i);
 			if (cellValue.equals(currentPlayer)) {
 				yourSquares++;
@@ -175,7 +175,7 @@ public class BoardMoves {
 		if (yourSquares == 0 && opponentSquares > 1) {
 			int moveCoord = 0;
 
-			for (int i = 0; i < board.getWidth(); i++) {
+			for (int i = 0; i < board.getSize(); i++) {
 				if (board.getCell(i, 2 - i).equals(" ")) {
 					moveCoord = i;
 					break;

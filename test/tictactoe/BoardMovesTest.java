@@ -165,9 +165,9 @@ public class BoardMovesTest {
 	}
 
 	private Board setupBoard(String[] values) {
-		Board board = new Board();
+		Board board = new Board("x", "o");
 		for (int i = 0; i < values.length; i++) {
-			board.setValue(values[i], i % 3, (int) Math.floor(i / 3.0));
+			board.setValue(values[i], Utils.getBoardX(i), Utils.getBoardY(i));
 		}
 		return board;
 	}

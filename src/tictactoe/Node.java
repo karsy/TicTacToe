@@ -27,22 +27,46 @@ public class Node {
         this.currentBoard = board;
     }
 
-    public Node(boolean generateChildren, String currentPlayer) {
+    /*public Node(boolean generateChildren, String currentPlayer) {
         if (generateChildren) {
             generateChildren(currentPlayer);
         }
-    }
+    }*/
 
     public void addChild(Node child) {
         this.getChildren().add(child);
     }
 
-    public void generateChildren(String currentPlayer) {
+    public void generateChildren(String currentPlayer, int turn) {
+        if (turn == 10) {
+            return;
+        }
+
         for (int i = 0; i < Board.NUMBER_OF_CELLS; i++ ) {
-            if (currentBoard.getCell(getBoardX(i), getBoardY(i)).equals(" ")) {
+            if (currentBoard.getCell(Utils.getBoardX(i), Utils.getBoardY(i)).equals(" ")) {
+                Board newBoard = Board.fromBoard(currentBoard);
+                Move newMove = new Move(Utils.getBoardX(i), Utils.getBoardY(i), currentPlayer);
+                newBoard.applyMove(newMove);
+                Node child = new Node(newMove, newBoard);
+                children.add(child);
+
+                if (!newBoard.getVictory(newMove)) {
+                    child.generateChildren(currentBoard.getOtherPlayer(currentPlayer), turn + 1);
+                    if (turn == 9) {
+                        child.score = GameTree.DRAW_WEIGHT;
+                    }
+                } else {
+                    if (currentPlayer.equals(currentBoard.getStartPlayer())) {
+                        child.score = GameTree.WIN_WEIGHT * (1 / Math.pow(turn, 2));
+                    } else {
+                        child.score = GameTree.DRAW_WEIGHT * (1 / Math.pow(turn, 2));
+                    }
+                }
 
             }
         }
+
+        score = children.stream().mapToDouble(n -> n.score).sum();
     }
 
     public void addChildren(Node... children) {

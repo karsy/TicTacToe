@@ -13,6 +13,20 @@ public class Board {
         this.players[1] = secondPlayer;
     }
 
+    public static Board fromBoard(Board oldBoard) {
+        Board newBoard = new Board(oldBoard.players[0], oldBoard.players[1]);
+        newBoard.board = new String[oldBoard.board.length][oldBoard.board.length];
+
+        // Deep copy
+        for (int x = 0; x < oldBoard.board.length; x++) {
+            for (int y = 0; y < oldBoard.board[x].length; y++) {
+                newBoard.board[x][y] = oldBoard.board[x][y];
+            }
+        }
+
+        return newBoard;
+    }
+
     public boolean setValue(String c, int x, int y) {
         if (!board[x][y].equals(" ")) {
            return false;
@@ -26,6 +40,10 @@ public class Board {
         return true;
     }
 
+    public boolean applyMove(Move move) {
+        return setValue(move.character, move.x, move.y);
+    }
+
     public void clearCell(int x, int y) {
         board[x][y] = " ";
     }
@@ -34,19 +52,60 @@ public class Board {
         return board[x][y];
     }
 
-    public int getWidth() {
-        return 3;
-    }
-
-    public int getHeight() {
-        return 3;
+    public int getSize() {
+        return board.length;
     }
 
     public boolean getVictory(Move lastMove) {
 
+        int equalCells = 0;
 
+        // Horizontal
+        for (int i = 0; i < getSize(); i++) {
+            if (board[i][lastMove.y].equals(lastMove.character)) {
+                equalCells++;
+            }
+        }
 
-        return false;
+        if (equalCells == getSize()) {
+            return true;
+        }
+
+        // Vertical
+        equalCells = 0;
+        for (int i = 0; i < getSize(); i++) {
+            if (board[lastMove.x][i].equals(lastMove.character)) {
+                equalCells++;
+            }
+        }
+
+        if (equalCells == getSize()) {
+            return true;
+        }
+
+        // Diagonally
+
+        // Last move was on the edge
+        if ((lastMove.x + lastMove.y * getSize()) % 2 == 1) {
+            return false;
+        }
+
+        equalCells = 0;
+        if (lastMove.x == lastMove.y) {
+            for (int i = 0; i < getSize(); i++) {
+                if (board[i][i].equals(lastMove.character)) {
+                    equalCells++;
+                }
+            }
+        } else {
+            for (int i = 0; i < getSize(); i++) {
+                if (board[i][2 - i].equals(lastMove.character)) {
+                    equalCells++;
+                }
+            }
+        }
+
+        return equalCells == getSize();
     }
 
     // Return the string of the player that is not the player given in the parameter
@@ -63,6 +122,10 @@ public class Board {
 
     }
 
+    public String getStartPlayer() {
+        return players[0];
+    }
+
     public boolean illegalPlayer(String player) {
         return Arrays.stream(players).filter(s -> s.equals(player)).count() == 0;
     }
@@ -75,8 +138,8 @@ public class Board {
 
         Board other = (Board) obj;
         boolean equal = true;
-        for (int x = 0; x < getWidth(); x++) {
-            for (int y = 0; y < getHeight(); y++) {
+        for (int x = 0; x < getSize(); x++) {
+            for (int y = 0; y < getSize(); y++) {
                 if (!board[x][y].equals(other.getCell(x, y))) {
                     equal = false;
                 }

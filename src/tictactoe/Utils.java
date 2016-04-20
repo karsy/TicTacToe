@@ -14,6 +14,4 @@ public class Utils {
 	public static int getBoardY(int pos) {
 		return (int) Math.floor(pos / 3.0);
 	}
-
-	public static get
 }
