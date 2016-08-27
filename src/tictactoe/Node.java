@@ -43,19 +43,32 @@ public class Node {
                     }
                 } else {
                     if (currentPlayer.equals(currentBoard.getStartPlayer())) {
-                        child.score = GameTree.WIN_WEIGHT * (1 / Math.pow(turn, 2));
+                        child.score = GameTree.WIN_WEIGHT - turn;
                     } else {
-                        child.score = GameTree.LOSS_WEIGHT * (1 / Math.pow(turn, 2));
+                        child.score = GameTree.LOSS_WEIGHT + turn;
                     }
                 }
 
             }
         }
 
-        score = children.stream().mapToDouble(n -> n.score).sum();
+        if (currentPlayer.equals(currentBoard.getStartPlayer())) {
+            score = getMaxChildScore();
+        } else {
+            score = getMinChildScore();
+        }
     }
 
-    public Node getBestChild() {
+    private double getMaxChildScore() {
+        return children.stream().mapToDouble(node -> node.score).max().getAsDouble();
+    }
+
+    private double getMinChildScore() {
+        return children.stream().mapToDouble(node -> node.score).min().getAsDouble();
+    }
+
+    public Node getBestChild(boolean startingPlayer) {
+        /*
         double bestScore = children.get(0).getScore();
         Node bestNode = children.get(0);
         for (Node child: children) {
@@ -65,7 +78,8 @@ public class Node {
             }
         }
 
-        return bestNode;
+        return bestNode;*/
+        return children.stream().filter(node -> node.score == score).findFirst().get();
     }
 
     public Node getChild(Move move) {

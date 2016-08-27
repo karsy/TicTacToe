@@ -52,7 +52,7 @@ public class TicTacToe {
         }
     }
 
-    /*public void run() {
+    public void run1() {
         Move playerMove = null;
         int turn = 1;
         while (true) {
@@ -86,10 +86,10 @@ public class TicTacToe {
 
 
         }
-    }*/
+    }
 
     public static void main(String[] args) {
         TicTacToe game = new TicTacToe();
-        game.run();
+        game.run1();
     }
 }

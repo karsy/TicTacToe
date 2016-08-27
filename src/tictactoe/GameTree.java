@@ -5,8 +5,8 @@ package tictactoe;
  */
 public class GameTree {
 
-    public static final double WIN_WEIGHT = 1.0;
-    public static final double LOSS_WEIGHT = -1.0;
+    public static final double WIN_WEIGHT = 10.0;
+    public static final double LOSS_WEIGHT = -10.0;
     public static final double DRAW_WEIGHT = 0.0;
 
     private Node root;
