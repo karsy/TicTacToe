@@ -1,95 +1,90 @@
 package tictactoe;
 
+import tictactoe.board.Board;
+import tictactoe.board.Move;
+import tictactoe.player.ai.AIPlayer;
+import tictactoe.player.HumanPlayer;
+import tictactoe.player.Player;
+
 import java.util.Scanner;
 
-/**
- * Created by vegard on 21.03.2016.
- */
 public class TicTacToe {
 
-    private AI ai;
-    private String human;
+    private static final String FIRST_PLAYER = "X";
+    private static final String SECOND_PLAYER = "O";
+
+    private Player firstPlayer;
+    private Player secondPlayer;
     private Board board;
-    private Scanner scanner = new Scanner(System.in);
 
-    public TicTacToe() {
-        ai = new AI("x");
-        human = "o";
-        board = new Board(ai.getCharacter(), human);
-    }
-
-    public void run() {
-        Move playerMove = null;
-        int turn = 1;
-        while (true) {
-            Move aiMove = ai.getMove(board, playerMove);
-            board.applyMove(aiMove);
-            if (board.getVictory(aiMove)) {
-                System.out.println(board);
-                System.out.println("You lost!");
-                break;
-            }
-            turn++;
-            System.out.println(board);
-
-            if (turn == 10) {
-                System.out.println("Draw!");
-                break;
-            }
-
-            System.out.println("Move (x,y):");
-            String in = scanner.nextLine();
-            int x = Integer.parseInt(in.substring(0,1), 10);
-            int y = Integer.parseInt(in.substring(2,3), 10);
-            playerMove = new Move(x, y, human);
-            board.applyMove(playerMove);
-            System.out.println(board);
-            if (board.getVictory(playerMove)) {
-                System.out.println("You won!");
-                break;
-            }
-            turn++;
+    public TicTacToe(boolean humanStarts) {
+        if (humanStarts) {
+            firstPlayer = new HumanPlayer(FIRST_PLAYER);
+            secondPlayer = new AIPlayer(SECOND_PLAYER);
+        } else {
+            firstPlayer = new AIPlayer(FIRST_PLAYER);
+            secondPlayer = new HumanPlayer(SECOND_PLAYER);
         }
+
+        board = new Board(firstPlayer, secondPlayer);
     }
 
-    public void run1() {
-        Move playerMove = null;
-        int turn = 1;
-        while (true) {
+    private boolean doMove(Player player) {
+        boolean legalMove = false;
+        Move move = null;
+
+        while (!legalMove) {
+            move = player.getMove(board);
+            legalMove = board.applyMove(move);
+        }
+        System.out.println(board);
+
+        if (board.getVictory(move)) {
             System.out.println(board);
-            System.out.println("Move (x,y):");
-            String in = scanner.nextLine();
-            int x = Integer.parseInt(in.substring(0,1), 10);
-            int y = Integer.parseInt(in.substring(2,3), 10);
-            playerMove = new Move(x, y, human);
-            board.applyMove(playerMove);
-            if (board.getVictory(playerMove)) {
-                System.out.println(board);
-                System.out.println("You won!");
+            System.out.println("Player " + player.getCharacter() + " won!");
+            return true;
+        }
+
+        return false;
+    }
+
+    private void play() {
+        int moveNum = 1;
+
+        while (true) {
+            boolean didWin = doMove(firstPlayer);
+            if (didWin) {
                 break;
             }
-            turn++;
+            moveNum++;
 
-            if (turn == 10) {
+            if (moveNum > 9) {
                 System.out.println("Draw!");
                 break;
             }
 
-            Move aiMove = ai.getMove(board, playerMove);
-            board.applyMove(aiMove);
-            if (board.getVictory(aiMove)) {
-                System.out.println(board);
-                System.out.println("You lost!");
+            didWin = doMove(secondPlayer);
+            if (didWin) {
                 break;
             }
-            turn++;
+            moveNum++;
 
-
+            if (moveNum > 9) {
+                System.out.println("Draw!");
+                break;
+            }
         }
     }
 
     public static void main(String[] args) {
-        TicTacToe game = new TicTacToe();
-        game.run1();
+        Scanner scanner = new Scanner(System.in);
+        String answer = "";
+        System.out.println("Do you want to start the game? [y,n]");
+        while (!(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("n"))) {
+            answer = scanner.nextLine();
+        }
+
+        TicTacToe game = new TicTacToe(answer.equalsIgnoreCase("y"));
+        game.play();
     }
 }

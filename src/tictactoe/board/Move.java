@@ -1,18 +1,17 @@
-package tictactoe;
+package tictactoe.board;
 
-/**
- * Created by vegard on 21.03.2016.
- */
+import tictactoe.player.Player;
+
 public class Move {
 
     public final int x;
     public final int y;
-    public final String character;
+    public final Player player;
 
-    public Move(int x, int y, String character) {
+    public Move(int x, int y, Player player) {
         this.x = x;
         this.y = y;
-        this.character = character;
+        this.player = player;
     }
 
     @Override
@@ -24,7 +23,7 @@ public class Move {
 
         if (x != move.x) return false;
         if (y != move.y) return false;
-        return character.equals(move.character);
+        return player.equals(move.player);
 
     }
 }
