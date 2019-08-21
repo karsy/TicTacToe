@@ -1,2 +1,2 @@
 # TicTacToe
-Experimental TicTacToe AI
+TicTacToe AI using Minimax to choose moves.
